@@ -1,0 +1,8 @@
+{
+  "name": "typescript-puzzler-iizo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Souma Suzuki <subayai.kobashiri@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
