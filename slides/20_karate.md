@@ -15,23 +15,22 @@ type Union = A | B
 
 ---
 
-# こんな事できます
-`true` のときだけパラメータが増えるStruct
+# Type Guard
+`null` の時は実行しない
 ```ts
-type WhenTrue = { flag: true, text: string }
-type WhenFalse = { flag: false }
-type Params = WhenTrue | WhenFalse
+type Floor = number | null
 
-function textIntoConsole(params: Params): void {
-  //              ↓Type Guard
-  if (params.flag === true) {
-    console.log(params.text)
-  }
-
-  console.log(params.text)
-  //                 ^^^^ コンパイルエラー
+function floorToString(floor: Floor): string {
+  if (floor === null) return 'None'
+  return `${floor.toString()}F`
 }
 ```
+
+---
+
+# こんな事できます
+`nori` の値によってパラメータが増えるStruct
+<iframe src="https://www.typescriptlang.org/play/#code/C4TwDgpgBA4grgOwNYEMFQLxQN5QRYFALigGdgAnASwQHMAaPAe2pMrmgF8AoUSKAHJVaVaphx4CxMpRoNmrKADMUAG1IRGAdxSkUAIyol9TJqohoonKL3DQAynFIALKuPjJLAH0HDRVbm4lRABjYComdAtgAApSJ1cSRxcqAEoScmo6HG4oPKgqJSg4hKoAOgQWNJz82qgAenqyUvdEVHRAOwZANqdAaUNcurzGqEBlBmHAcwZmlLKdPUMoQCSGQCHlQHNHQHUGQAiGQDEGQAsGQE0GQGiGbcAKhkBLhkAfhkBrBkArBn3+gfipmYMAgbyKAjgKdAByAHkqFJUb53KxQCDqaDYEG1IYPVziIQiMTdPqvKDvYCfdBaZwQBCI-wlFKpEE8HhBULhSJQHF4gnUImJXxItIZWTZKG1QrFOHlJ6GVI1V4YrFQb4AaRQFBQQNJYIhQoGIq+Yv+pCostqZO4QA" height="500px"></iframe>
 
 ---
 
@@ -68,6 +67,24 @@ type Diff<T, U> = T extends U ? never : T
 
 type Sushi = 'maguro' | 'ika' | 'aji' | 'gari'
 type TrueSushi = Diff<Sushi, 'gari'> // 'maguro' | 'ika' | 'aji'
+```
+
+---
+
+# 応用すると
+Structから任意のフィールドを消し去るOmit
+```ts
+type Pick<T, U> = T extends U ? T : never
+type Diff<T, U> = T extends U ? never : T
+
+type Omit<T, K> = Pick<T, Diff<keyof T, K>>
+
+type Sushi = {
+  neta: string
+  shari: boolean
+}
+
+type WithoutShariSushi = Omit<Sushi, 'shari'> // { neta: string }
 ```
 
 ---
