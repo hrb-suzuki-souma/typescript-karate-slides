@@ -50,9 +50,9 @@ type Key = keyof Hash // 'name' | 'age'
 型の条件に応じて違う型を返す
 ```ts
 type TypeName<T> =
-  T extends string ? : 'string' :
-  T extends number ? : 'number' :
-  never
+  T extends string ? 'string'
+  : T extends number ? 'number'
+  : never
 
 type StringName = TypeName<string> // 'string'
 type NumberName = TypeName<number> // 'number'
